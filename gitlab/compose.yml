@@ -1,0 +1,76 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: always
+    hostname: gitlab
+    depends_on:
+      - postgresql
+      - redis
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://git.saarlandletsplay.de'
+
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+
+        ### PostgreSQL
+        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_encoding'] = 'utf8'
+        gitlab_rails['db_host'] = 'postgresql'
+        gitlab_rails['db_port'] = 5432
+        gitlab_rails['db_username'] = 'gitlab'
+        gitlab_rails['db_password'] = 'gitlabpass'
+        gitlab_rails['db_database'] = 'gitlabhq_production'
+
+        ### Redis
+        gitlab_rails['redis_host'] = 'redis'
+        gitlab_rails['redis_port'] = 6379
+
+        ### Profiler deaktivieren
+        gitlab_rails['performance_bar_enabled'] = false
+
+        ### SMTP für Emails
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = "mail.saarlandletsplay.de"
+        gitlab_rails['smtp_port'] = 587
+        gitlab_rails['smtp_user_name'] = "registry@saarlandletsplay.de"
+        gitlab_rails['smtp_password'] = "PWanq1cB!.555@4m"
+        gitlab_rails['smtp_domain'] = "saarlandletsplay.de"
+        gitlab_rails['smtp_authentication'] = "login"
+        gitlab_rails['smtp_enable_starttls_auto'] = true
+        gitlab_rails['gitlab_email_from'] = "noreply.gitlab@saarlandletsplay.de"
+
+        ### Interner HTTP für NPM
+        nginx['listen_port'] = 80
+        nginx['listen_https'] = false
+    ports:
+      - 2222:22
+    volumes:
+      - /root/docker/stacks/gitlab/config:/etc/gitlab
+      - /root/docker/stacks/gitlab/logs:/var/log/gitlab
+      - /root/docker/stacks/gitlab/data:/var/opt/gitlab
+    networks:
+      - proxy
+      - internal
+      - my_ipv6_net
+  redis:
+    image: redis:6
+    container_name: gitlab_redis
+    restart: always
+    command:
+      - redis-server
+      - --appendonly
+      - yes
+    volumes:
+      - /root/docker/stacks/gitlab/redis:/data
+    networks:
+      - internal
+networks:
+  proxy:
+    name: saarlandletsplay-external
+    external: true
+  internal:
+    name: saarlandletsplay-internal
+    external: true
+  my_ipv6_net:
+    external: true

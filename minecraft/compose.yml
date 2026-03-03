@@ -1,0 +1,121 @@
+# 🎮 **Minecraft Server Docker Compose**
+# Konfigurierbarer Minecraft Server mit verschiedenen Server-Typen
+
+services:
+  minecraft:
+    image: ${MINECRAFT_IMAGE:-itzg/minecraft-server:latest}
+    container_name: minecraft
+    restart: unless-stopped
+    environment:
+      # 🔧 **Server-Typ Konfiguration**
+      # Wähle einen Server-Typ durch Setzen der Umgebungsvariablen
+      # Mögliche Werte: VANILLA, PAPER, PURPUR, FORGE, FABRIC, QUILT
+      TYPE: ${MINECRAFT_TYPE:-VANILLA}
+      
+      # 📦 **Version Konfiguration**
+      # Beispiele: "1.20.1", "1.19.4", "latest", "LATEST"
+      VERSION: ${MINECRAFT_VERSION:-1.20.1}
+      
+      # 🌐 **Server-Einstellungen**
+      SERVER_NAME: ${SERVER_NAME:-SaarlandLetsPlay Minecraft}
+      MOTD: ${MOTD:-§6Willkommen auf dem SaarlandLetsPlay Server! §bViel Spaß!}
+      DIFFICULTY: ${DIFFICULTY:-normal}
+      GAMEMODE: ${SURVIVAL:-survival}
+      PVP: ${PVP:-true}
+      HARDCORE: ${HARDCORE:-false}
+      
+      # 👥 **Spieler-Einstellungen**
+      MAX_PLAYERS: ${MAX_PLAYERS:-20}
+      MAX_WORLD_SIZE: ${MAX_WORLD_SIZE:-10000}
+      VIEW_DISTANCE: ${VIEW_DISTANCE:-10}
+      SPAWN_PROTECTION: ${SPAWN_PROTECTION:-16}
+      
+      # 💾 **Welt-Einstellungen**
+      LEVEL_NAME: ${LEVEL_NAME:-world}
+      LEVEL_TYPE: ${LEVEL_TYPE:-DEFAULT}
+      GENERATOR_SETTINGS: ${GENERATOR_SETTINGS:-}
+      SEED: ${SEED:-}
+      
+      # 🔧 **Performance & RAM**
+      MEMORY: ${MEMORY:-4G}
+      JVM_OPTS: ${JVM_OPTS:--XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1}
+      
+      # 🌍 **Online-Modus**
+      ONLINE_MODE: ${ONLINE_MODE:-true}
+      ENFORCE_WHITELIST: ${ENFORCE_WHITELIST:-false}
+      
+      # 📡 **Network-Einstellungen**
+      SERVER_PORT: ${SERVER_PORT:-25565}
+      RCON_PORT: ${RCON_PORT:-25575}
+      ENABLE_RCON: ${ENABLE_RCON:-true}
+      RCON_PASSWORD: ${RCON_PASSWORD:-changeme}
+      
+      # 🎯 **Plugin/Mod Konfiguration**
+      # Für Paper/Purpur: Spigot-Plugins
+      PLUGINS: ${PLUGINS:-}
+      
+      # Für Forge/Fabric: Mods
+      MODPACK: ${MODPACK:-}
+      MODS: ${MODS:-}
+      MODS_URL: ${MODS_URL:-}
+      MODS_FILE: ${MODS_FILE:-}
+      
+      # 🔧 **Automatische Einstellungen**
+      # Download-Links für Mods/Plugins
+      RESOURCE_PACK: ${RESOURCE_PACK:-}
+      RESOURCE_PACK_SHA1: ${RESOURCE_PACK_SHA1:-}
+      RESOURCE_PACK_URL: ${RESOURCE_PACK_URL:-}
+      
+      # 📊 **Monitoring**
+      ENABLE_QUERY: ${ENABLE_QUERY:-true}
+      QUERY_PORT: ${QUERY_PORT:-25565}
+      
+      # 🗺️ **Map-Einstellungen**
+      GENERATE_STRUCTURES: ${GENERATE_STRUCTURES:-true}
+      ALLOW_NETHER: ${ALLOW_NETHER:-true}
+      ALLOW_END: ${ALLOW_END:-true}
+      
+      # 🎮 **Spiel-Regeln**
+      ANNOUNCE_PLAYER_ACHIEVEMENTS: ${ANNOUNCE_PLAYER_ACHIEVEMENTS:-true}
+      ENABLE_COMMAND_BLOCK: ${ENABLE_COMMAND_BLOCK:-true}
+      FORCE_GAMEMODE: ${FORCE_GAMEMODE:-false}
+      
+      # 🌐 **Web-Interface (optional)**
+      ENABLE_AUTOPAUSE: ${ENABLE_AUTOPAUSE:-false}
+      AUTOPAUSE_TIMEOUT_EST: ${AUTOPAUSE_TIMEOUT_EST:-300}
+      AUTOPAUSE_TIMEOUT_INIT: ${AUTOPAUSE_TIMEOUT_INIT:-600}
+      
+    ports:
+      - "${SERVER_PORT:-25565}:25565"
+      - "${RCON_PORT:-25575}:25575"
+      - "${QUERY_PORT:-25565}:25565/udp"
+    
+    volumes:
+      - ./data:/data
+      - ./mods:/mods
+      - ./config:/config
+      - ./plugins:/plugins
+    
+    stdin_open: true
+    tty: true
+    
+    networks:
+      - saarlandletsplay-internal
+      - saarlandletsplay-external
+    
+    healthcheck:
+      test: ["CMD", "mc-health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  saarlandletsplay-internal:
+    external: true
+  saarlandletsplay-external:
+    external: true
+
+volumes:
+  minecraft_data:
+    driver: local

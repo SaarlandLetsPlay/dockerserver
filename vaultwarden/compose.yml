@@ -1,0 +1,31 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    depends_on:
+      - postgresql
+    environment:
+      WEBSOCKET_ENABLED: "true"
+      DOMAIN: https://passwort.saarlandletsplay.de
+      ADMIN_TOKEN: T06WiChPFKbyYYTd6oWHfGvt37vt1blLcPKUJIX+H4=
+      SIGNUPS_ALLOWED: "true" # Nur Admin kann Benutzer erstellen
+      DATABASE_URL: postgresql://vaultwarden:vaultwarden_pass@postgresql:5432/vaultwarden_db
+    ports:
+      - 8083:80
+    volumes:
+      - /opt/stacks/vaultwarden/data:/data
+    networks:
+      - external
+      - internal
+      - my_ipv6_net
+networks:
+  external:
+    external: true
+    name: saarlandletsplay-external
+  internal:
+    external: true
+    name: saarlandletsplay-internal
+  my_ipv6_net:
+    external: true
+

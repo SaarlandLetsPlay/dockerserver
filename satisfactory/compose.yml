@@ -1,0 +1,21 @@
+services:
+  satisfactory-server:
+    container_name: satisfactory-server
+    hostname: satisfactory-server
+    image: wolveix/satisfactory-server:latest
+    network_mode: host
+    volumes:
+      - /opt/stacks/satisfactory-server:/config
+    environment:
+      - MAXPLAYERS=4
+      - PGID=1000
+      - PUID=1000
+      - SERVER_ADMIN_PASSWORD=Gn9fe4cdz
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
+

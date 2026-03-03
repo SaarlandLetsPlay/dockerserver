@@ -1,0 +1,72 @@
+version: "3.8"
+services:
+  prosody:
+    image: jitsi/prosody:stable-5390-1
+    container_name: jitsi-prosody
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+    environment:
+      XMPP_DOMAIN: meet.example.com
+      XMPP_AUTH_DOMAIN: auth.meet.example.com
+      XMPP_INTERNAL_MUC_DOMAIN: internal-muc.meet.example.com
+      XMPP_MUC_DOMAIN: muc.meet.example.com
+      ENABLE_AUTH: 1
+      JVB_AUTH_USER: jvb
+      JVB_AUTH_PASSWORD: jvb-pass
+      JICOFO_COMPONENT_SECRET: focus-secret
+      JICOFO_AUTH_USER: focus
+      JICOFO_AUTH_PASSWORD: focus-pass
+  jicofo:
+    image: jitsi/jicofo:stable-5390-1
+    container_name: jitsi-jicofo
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+      - my_ipv6_net
+    environment:
+      JICOFO_COMPONENT_SECRET: focus-secret
+      JICOFO_AUTH_USER: focus
+      JICOFO_AUTH_PASSWORD: focus-pass
+      ENABLE_AUTH: 1
+  jvb:
+    image: jitsi/jvb:stable-5390-1
+    container_name: jitsi-jvb
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+      - my_ipv6_net
+    environment:
+      JVB_AUTH_USER: jvb
+      JVB_AUTH_PASSWORD: jvb-pass
+      JVB_BREWERY_MUC: jvbbrewery@internal-muc.meet.example.com
+  web:
+    image: jitsi/web:stable-5390-1
+    container_name: jitsi-web
+    restart: unless-stopped
+    networks:
+      - external
+      - internal
+      - my_ipv6_net
+    ports:
+      - 8081:80
+      - 8443:443
+    environment:
+      ENABLE_AUTH: 1
+      XMPP_DOMAIN: meet.example.com
+      XMPP_BOSH_URL_BASE: http://jitsi-prosody:5280
+      XMPP_MUC_DOMAIN: muc.meet.example.com
+      PUBLIC_URL: https://meet.example.com
+networks:
+  external:
+    external: true
+    name: saarlandletsplay-external
+  internal:
+    external: true
+    name: saarlandletsplay-internal
+  my_ipv6_net:
+    external: true
+

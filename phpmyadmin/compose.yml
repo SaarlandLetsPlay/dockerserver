@@ -1,0 +1,29 @@
+services:
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mysql # MySQL Containername
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1 # optional, erlaubt Login auf andere DBs
+      PMA_USER: root # Standard-Login-Benutzer
+      PMA_PASSWORD: R7x2!vBfP9qK # Root-Passwort
+    volumes:
+      - /opt/stacks/phpmyadmin/config:/etc/phpmyadmin # eigene config.inc.php
+    networks:
+      - external
+      - internal
+      - my_ipv6_net
+networks:
+  external:
+    external: true
+    name: saarlandletsplay-external
+  internal:
+    external: true
+    name: saarlandletsplay-internal
+  my_ipv6_net:
+    external: true
+

@@ -1,0 +1,34 @@
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: npm
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    ports:
+      - 80:80
+      - 443:443
+      - 81:81
+    environment:
+      DB_MYSQL_HOST: mysql
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: npm
+      DB_MYSQL_PASSWORD: NpM4@dA9#xP
+      DB_MYSQL_NAME: npm_db
+    volumes:
+      - /opt/stacks/nginx-proxy-manager/data:/data
+      - /opt/stacks/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+    networks:
+      - external
+      - internal
+      - my_ipv6_net
+networks:
+  external:
+    external: true
+    name: saarlandletsplay-external
+  internal:
+    external: true
+    name: saarlandletsplay-internal
+  my_ipv6_net:
+    external: true
+

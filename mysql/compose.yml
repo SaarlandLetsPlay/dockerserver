@@ -1,0 +1,32 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: R7x2!vBfP9qK
+      MYSQL_DATABASE: npm_db
+      MYSQL_USER: npm
+      MYSQL_PASSWORD: NpM4@dA9#xP
+      # Additional databases for other services
+      MYSQL_DATABASE_2: owncloud_db
+      MYSQL_DATABASE_3: grafana_db
+    volumes:
+      - /opt/stacks/mysql/data:/var/lib/mysql
+    networks:
+      - internal
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - localhost
+      interval: 10s
+      timeout: 5s
+      retries: 5
+networks:
+  internal:
+    external: true
+    name: saarlandletsplay-internal
+

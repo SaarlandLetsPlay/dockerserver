@@ -1,0 +1,65 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - saarlandletsplay-internal
+      - my_ipv6_net
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=Gn9fe4cdz.
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=postgresql:5432
+      - GF_DATABASE_NAME=grafana_db
+      - GF_DATABASE_USER=grafana
+      - GF_DATABASE_PASSWORD=grafana_pass
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+      - my_ipv6_net
+    ports:
+      - 3000:3000 # später entfernen wenn Proxy läuft
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - saarlandletsplay-internal
+      - my_ipv6_net
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    pid: host
+    network_mode: host
+    volumes:
+      - /:/host:ro,rslave
+volumes:
+  prometheus_data: null
+  grafana_data: null
+networks:
+  saarlandletsplay-external:
+    external: true
+  saarlandletsplay-internal:
+    external: true
+  my_ipv6_net:
+    external: true
+

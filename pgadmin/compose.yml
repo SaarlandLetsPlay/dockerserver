@@ -1,0 +1,25 @@
+services:
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@saarlandletsplay.de
+      PGADMIN_DEFAULT_PASSWORD: PgR7x2!vBfP9qK
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    volumes:
+      - /opt/stacks/pgadmin/data:/var/lib/pgadmin
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+      - my_ipv6_net
+networks:
+  saarlandletsplay-external:
+    external: true
+  saarlandletsplay-internal:
+    external: true
+  my_ipv6_net:
+    external: true

@@ -1,0 +1,21 @@
+services:
+  dockhand:
+    container_name: dockhand
+    image: fnsys/dockhand:latest
+    restart: unless-stopped
+    environment:
+      - DATA_DIR=/opt/stacks/dockhand
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/stacks/dockhand:/opt/stacks/dockhand
+    expose:
+      - 3000
+    networks:
+      - saarlandletsplay-external
+      - my_ipv6_net
+networks:
+  saarlandletsplay-external:
+    external: true
+  my_ipv6_net:
+    external: true
+

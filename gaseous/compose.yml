@@ -1,0 +1,45 @@
+services:
+  gaseous-server:
+    container_name: gaseous
+    image: gaseousgames/gaseousserver:latest
+    restart: unless-stopped
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+      - my_ipv6_net
+    depends_on:
+      - gsdb
+    ports:
+      - 5198:80
+    volumes:
+      - gs:/home/gaseous/.gaseous-server
+    environment:
+      - TZ=Europe/Berlin
+      - dbhost=gsdb
+      - dbuser=root
+      - dbpass=gaseous
+      - igdbclientid=wfiqdpp7gxbxyfddd9oyyqh2zil0sh
+      - igdbclientsecret=9bxl732c67ztp21up2ulrlplyqgsek
+  gsdb:
+    container_name: gsdb
+    image: mariadb
+    restart: unless-stopped
+    networks:
+      - saarlandletsplay-internal
+    volumes:
+      - gsdb:/var/lib/mysql
+    environment:
+      - MARIADB_ROOT_PASSWORD=gaseous
+      - MARIADB_USER=gaseous
+      - MARIADB_PASSWORD=gaseous
+volumes:
+  gs: null
+  gsdb: null
+networks:
+  my_ipv6_net:
+    external: true
+  saarlandletsplay-external:
+    external: true
+  saarlandletsplay-internal:
+    external: true
+

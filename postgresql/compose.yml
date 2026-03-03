@@ -1,0 +1,29 @@
+services:
+  postgresql:
+    image: postgres:16-alpine
+    container_name: postgresql
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: PgR7x2!vBfP9qK
+      POSTGRES_USER: postgres
+      # Multiple databases for different services
+      POSTGRES_DB: authentik
+      POSTGRES_DB_2: gitlabhq_production
+      POSTGRES_DB_3: grafana_db
+      POSTGRES_DB_4: vaultwarden_db
+    volumes:
+      - /opt/stacks/postgresql/data:/var/lib/postgresql/data
+      - /opt/stacks/postgresql/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - saarlandletsplay-internal
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+networks:
+  saarlandletsplay-internal:
+    external: true
