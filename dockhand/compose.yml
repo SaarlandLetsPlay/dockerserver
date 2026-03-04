@@ -12,10 +12,7 @@ services:
       - 3000
     networks:
       - saarlandletsplay-external
-      - my_ipv6_net
 networks:
   saarlandletsplay-external:
-    external: true
-  my_ipv6_net:
     external: true
 
