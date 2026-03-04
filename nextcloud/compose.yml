@@ -1,0 +1,50 @@
+services:
+  nextcloud:
+    image: nextcloud:${NEXTCLOUD_VERSION:-latest}
+    container_name: nextcloud
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - ${NEXTCLOUD_PORT:-85}:80
+    volumes:
+      - nextcloud_files:/var/www/html
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./docker-socket-fix.sh:/docker-socket-fix.sh:ro
+    entrypoint: /docker-socket-fix.sh
+    command: apache2-foreground
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST:-mysql}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-nextcloud_db}
+      - MYSQL_USER=${MYSQL_USER:-nextcloud}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER:-admin}
+      - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
+      - NEXTCLOUD_TRUSTED_DOMAINS=${NEXTCLOUD_DOMAIN}
+      - OVERWRITEHOST=${NEXTCLOUD_DOMAIN}
+      - OVERWRITEPROTOCOL=https
+      - REDIS_HOST=nextcloud-redis
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+    external_links:
+      - mysql:mysql
+  redis:
+    image: redis:7-alpine
+    container_name: nextcloud-redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - saarlandletsplay-internal
+volumes:
+  nextcloud_files: null
+networks:
+  saarlandletsplay-external:
+    external: true
+  saarlandletsplay-internal:
+    external: true
