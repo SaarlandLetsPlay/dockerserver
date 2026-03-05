@@ -7,6 +7,9 @@ services:
     container_name: minecraft
     restart: unless-stopped
     environment:
+      # ✅ **EULA automatisch akzeptieren**
+      EULA: "TRUE"
+      
       # 🔧 **Server-Typ Konfiguration**
       # Wähle einen Server-Typ durch Setzen der Umgebungsvariablen
       # Mögliche Werte: VANILLA, PAPER, PURPUR, FORGE, FABRIC, QUILT
