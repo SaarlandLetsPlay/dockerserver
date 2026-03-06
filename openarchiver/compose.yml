@@ -1,0 +1,87 @@
+services:
+  open-archiver:
+    image: logiclabshq/open-archiver:latest
+    container_name: open-archiver
+    restart: unless-stopped
+    ports:
+      - ${OA_PORT:-3100}:3000
+    env_file:
+      - .env
+    volumes:
+      - oa_data:${STORAGE_LOCAL_ROOT_PATH:-/var/data/open-archiver}
+    depends_on:
+      oa-postgres:
+        condition: service_healthy
+      oa-valkey:
+        condition: service_healthy
+      oa-meilisearch:
+        condition: service_started
+      oa-tika:
+        condition: service_started
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+
+  oa-postgres:
+    image: postgres:17-alpine
+    container_name: oa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-open_archive}
+      POSTGRES_USER: ${POSTGRES_USER:-openarchiver}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - oa_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-openarchiver} -d ${POSTGRES_DB:-open_archive}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - saarlandletsplay-internal
+
+  oa-valkey:
+    image: valkey/valkey:8-alpine
+    container_name: oa-valkey
+    restart: unless-stopped
+    command: valkey-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - oa_valkeydata:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - saarlandletsplay-internal
+
+  oa-meilisearch:
+    image: getmeili/meilisearch:v1.15
+    container_name: oa-meilisearch
+    restart: unless-stopped
+    environment:
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+      MEILI_SCHEDULE_SNAPSHOT: ${MEILI_SCHEDULE_SNAPSHOT:-86400}
+    volumes:
+      - oa_meilidata:/meili_data
+    networks:
+      - saarlandletsplay-internal
+
+  oa-tika:
+    image: apache/tika:3.2.2.0-full
+    container_name: oa-tika
+    restart: unless-stopped
+    networks:
+      - saarlandletsplay-internal
+
+volumes:
+  oa_data:
+  oa_pgdata:
+  oa_valkeydata:
+  oa_meilidata:
+
+networks:
+  saarlandletsplay-external:
+    external: true
+  saarlandletsplay-internal:
+    external: true
