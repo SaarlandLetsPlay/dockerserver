@@ -1,57 +1,93 @@
-# Dockhand Server Deployment
+# SaarlandLetsPlay Docker Server
 
-## 🚀 Schnellstart mit Deployment Script
+## 🚀 Schnellstart
 
 ```bash
-# Script ausführen (installiert automatisch Docker)
+# Deployment Script ausführen (installiert automatisch Docker)
 ./deploy-stacks.sh
 ```
 
 ## 📋 Übersicht aller Services
 
 ### 🔧 Infrastructure
-- **Dockhand** - Docker Management (Port 3000)
-- **MySQL** - Zentrale MySQL-Datenbank
-- **PostgreSQL** - Zentrale PostgreSQL-Datenbank
+| Service | Image | Port | Beschreibung |
+|---|---|---|---|
+| **Dockhand** | `fnsys/dockhand` | 3000 | Docker Management UI |
+| **MySQL** | `mysql:8.4` | 3306 (intern) | Zentrale MySQL-Datenbank |
+| **PostgreSQL** | `postgres:16-alpine` | 5432 (intern) | Zentrale PostgreSQL-Datenbank |
 
 ### 🗄️ Datenbank-Verwaltung
-- **phpMyAdmin** - MySQL Verwaltung (Port 8080)
-- **pgAdmin** - PostgreSQL Verwaltung (Port 5050)
+| Service | Image | Port | Beschreibung |
+|---|---|---|---|
+| **phpMyAdmin** | `phpmyadmin:latest` | 8080 | MySQL Verwaltung |
+| **pgAdmin** | `dpage/pgadmin4` | 5050 | PostgreSQL Verwaltung |
 
-### 🌐 Services
-- **Nginx Proxy Manager** - Reverse Proxy (Ports 80, 443, 81)
-- **Authentik** - Authentifizierung (Ports 9000, 9443)
-- **GitLab** - Git Repository (Port 2222)
-- **OwnCloud** - Cloud Storage (Port 85)
-- **Satisfactory** - Game Server (host networking)
+### 🌐 Web-Services
+| Service | Domain | Beschreibung |
+|---|---|---|
+| **Nginx Proxy Manager** | `proxy.saarlandletsplay.de` | Reverse Proxy (Ports 80, 443, 81) |
+| **Nextcloud** | `cloud.saarlandletsplay.de` | Cloud Storage (Port 85) |
+| **Vaultwarden** | `passwort.saarlandletsplay.de` | Passwort-Manager |
+| **Grafana** | `mon.saarlandletsplay.de` | Monitoring Dashboard |
+| **Open Archiver** | `archiver.saarlandletsplay.de` | E-Mail-Archivierung (Port 3100) |
+
+### 📊 Monitoring
+| Service | Image | Beschreibung |
+|---|---|---|
+| **Prometheus** | `prom/prometheus` | Metriken-Sammlung |
+| **Grafana** | `grafana/grafana` | Dashboards & Visualisierung |
+| **Node Exporter** | `prom/node-exporter` | Host-Metriken |
+| **cAdvisor** | `gcr.io/cadvisor/cadvisor` | Container-Metriken |
+
+### 🎮 Game Server
+| Service | Image | Beschreibung |
+|---|---|---|
+| **Satisfactory** | `wolveix/satisfactory-server` | Game Server (host networking) |
+| **Minecraft** | `itzg/minecraft-server` | Minecraft Server (Port 25565) |
 
 ## 🏗️ Datenbank-Architektur
 
-### Zentrale MySQL (Container: mysql)
-- `npm_db` → Nginx Proxy Manager
-- `owncloud_db` → OwnCloud
-- `grafana_db` → Grafana
+### Zentrale MySQL 8.4 (Container: `mysql`)
+| Datenbank | Service |
+|---|---|
+| `nextcloud_db` | Nextcloud |
+| `npm_db` | Nginx Proxy Manager |
+| `phpmyadmin` | phpMyAdmin Configuration Storage |
 
-### Zentrale PostgreSQL (Container: postgresql)
-- `authentik` → Authentik
-- `gitlabhq_production` → GitLab
-- `grafana_db` → Grafana (Alternative)
+### Zentrale PostgreSQL 16 (Container: `postgresql`)
+| Datenbank | Service |
+|---|---|
+| `authentik` | Authentik |
+| `gitlabhq_production` | GitLab |
 
-## 📁 Volume-Struktur
+### Eigene PostgreSQL (Container: `oa-postgres`)
+| Datenbank | Service |
+|---|---|
+| `open_archive` | Open Archiver |
 
-Alle Daten sind unter `/opt/stacks/` konsolidiert:
+## 📁 Verzeichnisstruktur
 
 ```
-/opt/stacks/
-├── mysql/data
-├── postgresql/data
-├── postgresql/init-scripts
-├── nginx-proxy-manager/data
-├── nginx-proxy-manager/letsencrypt
-├── pgadmin/data
-├── phpmyadmin/config
-├── dockhand/
-└── satisfactory-server/
+dockerserver/
+├── README.md                # Diese Datei
+├── deploy-stacks.sh         # Automatisches Deployment Script
+├── dockhand/                # Docker Management UI
+├── mysql/                   # MySQL 8.4 LTS
+├── postgresql/              # PostgreSQL 16
+├── nginx proxy manager/     # Reverse Proxy + SSL
+├── nextcloud/               # Cloud Storage + Redis
+├── vaultwarden/             # Passwort-Manager
+├── grafana/                 # Monitoring (Grafana + Prometheus)
+├── openarchiver/            # E-Mail-Archivierung
+├── phpmyadmin/              # MySQL Verwaltung
+├── pgadmin/                 # PostgreSQL Verwaltung
+├── minecraft/               # Minecraft Server
+├── satisfactory/            # Satisfactory Server
+├── gaseous/                 # Gaseous Game Library
+├── factorio/                # Factorio Server
+├── authentik/               # Authentifizierung
+├── gitlab/                  # Git Repository
+└── jitsi/                   # Video-Konferenzen
 ```
 
 ## 🔑 Zugangsdaten
@@ -63,20 +99,35 @@ Alle Daten sind unter `/opt/stacks/` konsolidiert:
 ### Verwaltungstools
 - **phpMyAdmin**: `root` / `R7x2!vBfP9qK`
 - **pgAdmin**: `admin@saarlandletsplay.de` / `PgR7x2!vBfP9qK`
+- **Nextcloud Admin**: `admin` / `Y7uK3pL9xF2vN6mT`
+
+## � Netzwerk-Architektur
+
+### Docker-Netzwerke
+| Netzwerk | Typ | Verwendung |
+|---|---|---|
+| `saarlandletsplay-internal` | Bridge (extern) | Interne Service-Kommunikation (DB-Zugriff etc.) |
+| `saarlandletsplay-external` | Bridge (extern) | Externe Erreichbarkeit über NPM |
+
+### IPv6
+- Server-IPv6: `2a0f:6284:4300:101::13a9`
+- AAAA-DNS-Einträge für `cloud.` und `dockhand.` vorhanden
+- IPv6-Traffic wird über NPM terminiert
+
+### Satisfactory / Minecraft
+- **network_mode: host** für optimale Gaming-Performance
 
 ## 🎯 Dockhand Integration
 
 Alle Services sind über Dockhand verwaltbar:
-1. Dockhand starten: `cd dockhand && docker compose up -d`
-2. Zugriff: http://localhost:3000
-3. Stacks können über die UI verwaltet werden
+1. Zugriff: `https://dockhand.saarlandletsplay.de`
+2. Stacks können über die UI deployed und verwaltet werden
+3. Update-Checks für alle Container verfügbar
 
 ## 🔄 Manuelles Deployment
 
-Falls das Script nicht verwendet wird:
-
 ```bash
-# 1. Docker installieren (falls nicht vorhanden)
+# 1. Docker installieren
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 sudo usermod -aG docker $USER
@@ -88,64 +139,29 @@ sudo chown -R $USER:$USER /opt/stacks
 # 3. Netzwerke erstellen
 docker network create saarlandletsplay-internal
 docker network create saarlandletsplay-external
-docker network create my_ipv6_net
 
-# 4. Datenbanken starten
-cd mysql && docker compose up -d
-cd ../postgresql && docker compose up -d
+# 4. Datenbanken zuerst starten
+cd mysql && docker compose up -d && cd ..
+cd postgresql && docker compose up -d && cd ..
 
 # 5. Verwaltungstools starten
-cd ../phpmyadmin && docker compose up -d
-cd ../pgadmin && docker compose up -d
-cd ../dockhand && docker compose up -d
+cd phpmyadmin && docker compose up -d && cd ..
+cd pgadmin && docker compose up -d && cd ..
+cd dockhand && docker compose up -d && cd ..
 
 # 6. Services starten
-cd ../nginx-proxy-manager && docker compose up -d
-cd ../authentik && docker compose up -d
-cd ../gitlab && docker compose up -d
-cd ../owncloud && docker compose up -d
+cd "nginx proxy manager" && docker compose up -d && cd ..
+cd nextcloud && docker compose up -d && cd ..
+cd vaultwarden && docker compose up -d && cd ..
+cd grafana && docker compose up -d && cd ..
+cd openarchiver && docker compose up -d && cd ..
 ```
-
-## 🛠️ Script-Funktionen
-
-Das `deploy-stacks.sh` Script übernimmt automatisch:
-
-### ✅ **Docker Installation**
-- Prüft ob Docker installiert ist
-- Installiert neueste Docker CE Version
-- Installiert Docker Compose Plugin
-- Fügt Benutzer zur docker Gruppe hinzu
-
-### ✅ **Infrastruktur Setup**
-- Erstellt `/opt/stacks` Verzeichnisstruktur
-- Erstellt alle notwendigen Docker Netzwerke
-- Setzt korrekte Berechtigungen
-
-### ✅ **Smart Deployment**
-- Startet Services in korrekter Reihenfolge
-- Wartet auf Health-Checks bei Datenbanken
-- Zeigt Status und Versionen an
-
-### ✅ **Fehlerbehandlung**
-- Detailliertes Logging mit Farben
-- Überprüft Abhängigkeiten
-- Gibt klare Fehlermeldungen aus
-
-## 🌐 Netzwerk-Architektur
-
-### Standard-Netzwerke (alle Services außer Satisfactory)
-- **saarlandletsplay-internal**: Interne Kommunikation
-- **saarlandletsplay-external**: Externe Dienste
-- **my_ipv6_net**: IPv6 Support
-
-### Satisfactory
-- **network_mode: host** für optimale Gaming-Performance
-- Volume: `/opt/stacks/satisfactory-server`
 
 ## 🛠️ Wichtige Hinweise
 
-- Die Datenbanken müssen vor den abhängigen Services gestartet werden
-- Alle Services verwenden die Netzwerke `saarlandletsplay-internal` und `saarlandletsplay-external`
+- **Datenbanken zuerst** starten, dann abhängige Services
+- Alle Services nutzen `saarlandletsplay-internal` und `saarlandletsplay-external`
 - Dockhand benötigt Zugriff auf `/var/run/docker.sock`
-- Die init-Scripts für PostgreSQL werden beim ersten Start automatisch ausgeführt
-- Nach Docker Installation evtl. neu einloggen oder `newgrp docker` ausführen
+- PostgreSQL init-Scripts werden beim ersten Start automatisch ausgeführt
+- Nach Docker-Installation ggf. `newgrp docker` ausführen
+- SSL-Zertifikate werden über NPM mit Let's Encrypt verwaltet
