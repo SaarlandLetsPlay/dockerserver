@@ -3,8 +3,8 @@ services:
     image: jc21/nginx-proxy-manager:latest
     container_name: npm
     restart: unless-stopped
-    depends_on:
-      - mysql
+    # depends_on:
+    #   - mysql
     ports:
       - 80:80
       - 443:443
@@ -21,7 +21,6 @@ services:
     networks:
       - external
       - internal
-      - my_ipv6_net
 networks:
   external:
     external: true
@@ -29,6 +28,4 @@ networks:
   internal:
     external: true
     name: saarlandletsplay-internal
-  my_ipv6_net:
-    external: true
 
