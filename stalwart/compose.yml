@@ -1,0 +1,67 @@
+services:
+  stalwart:
+    image: ${STALWART_IMAGE:-stalwartlabs/mail-server:latest}
+    container_name: ${STALWART_CONTAINER:-stalwart}
+    restart: unless-stopped
+    ports:
+      - ${STALWART_SMTP_PORT:-25}:25
+      - ${STALWART_SUBMISSION_PORT:-587}:587
+      - ${STALWART_SUBMISSIONS_PORT:-465}:465
+      - ${STALWART_IMAP_PORT:-143}:143
+      - ${STALWART_IMAPS_PORT:-993}:993
+      - ${STALWART_POP3_PORT:-110}:110
+      - ${STALWART_POP3S_PORT:-995}:995
+      - ${STALWART_HTTPS_PORT:-8443}:443
+      - ${STALWART_HTTP_PORT:-8880}:8080
+      - ${STALWART_SIEVE_PORT:-4190}:4190
+    environment:
+      - STALWART_HOSTNAME=${STALWART_HOSTNAME:-mail.saarlandletsplay.de}
+    volumes:
+      - stalwart_data:/opt/stalwart-mail
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+    external_links:
+      - mysql:mysql
+
+  roundcube:
+    image: ${ROUNDCUBE_IMAGE:-roundcube/roundcubemail:latest}
+    container_name: ${ROUNDCUBE_CONTAINER:-roundcube}
+    restart: unless-stopped
+    depends_on:
+      - stalwart
+    ports:
+      - ${ROUNDCUBE_PORT:-8880}:80
+    environment:
+      - ROUNDCUBEMAIL_DEFAULT_HOST=${ROUNDCUBE_DEFAULT_HOST:-ssl://stalwart}
+      - ROUNDCUBEMAIL_DEFAULT_PORT=${ROUNDCUBE_DEFAULT_PORT:-993}
+      - ROUNDCUBEMAIL_SMTP_SERVER=${ROUNDCUBE_SMTP_SERVER:-tls://stalwart}
+      - ROUNDCUBEMAIL_SMTP_PORT=${ROUNDCUBE_SMTP_PORT:-587}
+      - ROUNDCUBEMAIL_DB_TYPE=mysql
+      - ROUNDCUBEMAIL_DB_HOST=${MYSQL_HOST:-mysql}
+      - ROUNDCUBEMAIL_DB_PORT=${MYSQL_PORT:-3306}
+      - ROUNDCUBEMAIL_DB_NAME=${ROUNDCUBE_DB_NAME:-roundcube_db}
+      - ROUNDCUBEMAIL_DB_USER=${ROUNDCUBE_DB_USER:-roundcube}
+      - ROUNDCUBEMAIL_DB_PASSWORD=${ROUNDCUBE_DB_PASSWORD}
+      - ROUNDCUBEMAIL_DES_KEY=${ROUNDCUBE_DES_KEY}
+      - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=${ROUNDCUBE_UPLOAD_MAX_FILESIZE:-25M}
+      - ROUNDCUBEMAIL_SKIN=elastic
+      - ROUNDCUBEMAIL_PLUGINS=archive,zipdownload,managesieve
+      - ROUNDCUBEMAIL_ASPELL_DICTS=de
+    volumes:
+      - roundcube_data:/var/roundcube/config
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+    external_links:
+      - mysql:mysql
+
+volumes:
+  stalwart_data:
+  roundcube_data:
+
+networks:
+  saarlandletsplay-external:
+    external: true
+  saarlandletsplay-internal:
+    external: true
