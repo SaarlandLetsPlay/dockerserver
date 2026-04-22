@@ -1,0 +1,76 @@
+services:
+  paperless:
+    image: ${PAPERLESS_IMAGE:-ghcr.io/paperless-ngx/paperless-ngx:latest}
+    container_name: ${PAPERLESS_CONTAINER:-paperless}
+    restart: unless-stopped
+    depends_on:
+      paperless-redis:
+        condition: service_healthy
+      paperless-tika:
+        condition: service_started
+      paperless-gotenberg:
+        condition: service_started
+    ports:
+      - ${PAPERLESS_PORT:-8000}:8000
+    env_file:
+      - .env
+    volumes:
+      - paperless_data:/usr/src/paperless/data
+      - paperless_media:/usr/src/paperless/media
+      - paperless_consume:/usr/src/paperless/consume
+      - paperless_export:/usr/src/paperless/export
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+    external_links:
+      - postgresql:postgresql
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  paperless-redis:
+    image: redis:7-alpine
+    container_name: paperless-redis
+    restart: unless-stopped
+    volumes:
+      - paperless_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - saarlandletsplay-internal
+
+  paperless-tika:
+    image: ghcr.io/paperless-ngx/tika:latest
+    container_name: paperless-tika
+    restart: unless-stopped
+    networks:
+      - saarlandletsplay-internal
+
+  paperless-gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: paperless-gotenberg
+    restart: unless-stopped
+    command:
+      - gotenberg
+      - --chromium-disable-javascript=true
+      - --chromium-allow-list=file:///tmp/.*
+    networks:
+      - saarlandletsplay-internal
+
+volumes:
+  paperless_data:
+  paperless_media:
+  paperless_consume:
+  paperless_export:
+  paperless_redis:
+
+networks:
+  saarlandletsplay-external:
+    external: true
+  saarlandletsplay-internal:
+    external: true
