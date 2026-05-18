@@ -90,14 +90,12 @@ EOF
 create_vaultwarden_compose() {
     log "Erstelle Vaultwarden compose.yml..."
     
-    cat > /home/saarlandletsplay/Downloads/dockerserver/vaultwarden/compose.yml << 'EOF'
+    cat > $(pwd)/vaultwarden/compose.yml << 'EOF'
 services:
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
-    depends_on:
-      - postgresql
     env_file:
       - /opt/stacks/vaultwarden/config.env
     environment:
@@ -206,7 +204,7 @@ main() {
     
     # Starte Vaultwarden
     log "Starte Vaultwarden..."
-    cd /home/saarlandletsplay/Downloads/dockerserver/vaultwarden
+    cd $(pwd)/vaultwarden
     docker compose up -d
     
     # Warte und konfiguriere

@@ -1,0 +1,16 @@
+services:
+  starrupture:
+    image: indifferentbroccoli/starrupture-server-docker
+    restart: unless-stopped
+    container_name: starrupture
+    stop_grace_period: 30s
+    ports:
+      # Using custom ports to avoid conflict with Satisfactory (which uses 7777 and is network_mode: host)
+      - ${DEFAULT_PORT:-7780}:${DEFAULT_PORT:-7780}/udp
+      - ${DEFAULT_PORT:-7780}:${DEFAULT_PORT:-7780}/tcp
+      # Query port
+      - ${QUERY_PORT:-27016}:${QUERY_PORT:-27016}/udp
+    env_file:
+      - .env
+    volumes:
+      - /opt/stacks/starrapture:/home/steam/server-files

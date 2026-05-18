@@ -82,6 +82,7 @@ deploy_remote() {
     log "Führe Haupt-Deployment auf Remote-Server aus..."
     
     ssh -i $SSH_KEY $SSH_USER@$REMOTE_SERVER << EOF
+        export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:\$PATH"
         cd $REMOTE_DIR
         
         # Script ausführbar machen
@@ -104,6 +105,7 @@ deploy_vaultwarden_remote() {
     log "Führe Vaultwarden Setup auf Remote-Server aus..."
     
     ssh -i $SSH_KEY $SSH_USER@$REMOTE_SERVER << EOF
+        export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:\$PATH"
         cd $REMOTE_DIR
         
         # Vaultwarden Setup ausführen
@@ -122,6 +124,7 @@ show_remote_status() {
     log "Zeige Status auf Remote-Server..."
     
     ssh -i $SSH_KEY $SSH_USER@$REMOTE_SERVER << EOF
+        export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:\$PATH"
         cd $REMOTE_DIR
         
         echo ""

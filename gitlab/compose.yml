@@ -5,7 +5,6 @@ services:
     restart: always
     hostname: gitlab
     depends_on:
-      - postgresql
       - redis
     environment:
       GITLAB_OMNIBUS_CONFIG: |

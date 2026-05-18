@@ -3,12 +3,11 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
-    depends_on:
-      - postgresql
+
     environment:
       WEBSOCKET_ENABLED: "true"
       DOMAIN: https://passwort.saarlandletsplay.de
-      ADMIN_TOKEN: T06WiChPFKbyYYTd6oWHfGvt37vt1blLcPKUJIX+H4=
+      ADMIN_TOKEN: $$argon2id$$v=19$$m=65540,t=3,p=4$$cKdSXfzWbrESymK3b78SM1GbIH1aB8l0pfC0PLNrGik$$5gFed7262oYrkpsgAEXeGQxpZz1Nwkc7qf9PNwDWsB0
       SIGNUPS_ALLOWED: "true" # Nur Admin kann Benutzer erstellen
       DATABASE_URL: postgresql://vaultwarden:vaultwarden_pass@postgresql:5432/vaultwarden_db
     ports:

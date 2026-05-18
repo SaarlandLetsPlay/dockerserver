@@ -1,0 +1,18 @@
+# Local env files containing secrets
+*.env
+.env*
+
+# Runtime logs
+*.log
+
+# Data and database directories (should not be in Git)
+data/
+vw-data/
+database/
+mariadb_data/
+owncloud_files/
+grafana_data/
+prometheus_data/
+config/
+node_modules/
+.DS_Store

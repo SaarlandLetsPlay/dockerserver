@@ -5,9 +5,6 @@ services:
     container_name: authentik
     command: server
     restart: unless-stopped
-    depends_on:
-      postgresql:
-        condition: service_healthy
     env_file:
       - .env
     environment:
@@ -32,9 +29,6 @@ services:
     container_name: authentik-worker
     command: worker
     restart: unless-stopped
-    depends_on:
-      postgresql:
-        condition: service_healthy
     env_file:
       - .env
     environment:

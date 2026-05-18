@@ -97,12 +97,21 @@ check_docker() {
 create_directories() {
     log "Erstelle /opt/stacks Verzeichnisstruktur..."
     
-    sudo mkdir -p /opt/stacks/{mysql,postgresql,nginx-proxy-manager,pgadmin,phpmyadmin,dockhand,satisfactory-server}
+    sudo mkdir -p /opt/stacks/{mysql,postgresql,nginx-proxy-manager,pgadmin,phpmyadmin,dockhand,satisfactory-server,starrapture,authentik,nextcloud,paperless,openarchiver,grafana,gaseous,gitlab,jitsi,minecraft,factorio}
     sudo mkdir -p /opt/stacks/postgresql/init-scripts
+    sudo mkdir -p /opt/stacks/pgadmin/data
     
     # Berechtigungen setzen
     sudo chown -R $USER:$USER /opt/stacks
     sudo chmod -R 755 /opt/stacks
+    
+    # pgAdmin benötigt spezielle UID/GID-Berechtigungen (5050:5050)
+    sudo chown -R 5050:5050 /opt/stacks/pgadmin
+    
+    # PostgreSQL benötigt spezielle UID/GID-Berechtigungen (70:70) für seine Datenbank-Dateien
+    if [ -d "/opt/stacks/postgresql/data" ]; then
+        sudo chown -R 70:70 /opt/stacks/postgresql/data
+    fi
     
     log "Verzeichnisstruktur erstellt"
 }
@@ -260,13 +269,25 @@ main() {
         "phpmyadmin:phpmyadmin:false"
         "pgadmin:pgadmin:false"
         "nginx-proxy-manager:nginx-proxy-manager:false"
+        "authentik:authentik:false"
+        "nextcloud:nextcloud:false"
+        "paperless:paperless:false"
+        "openarchiver:openarchiver:false"
+        "grafana:grafana:false"
+        "gaseous:gaseous:false"
+        "gitlab:gitlab:false"
+        "jitsi:jitsi:false"
+        "minecraft:minecraft:false"
+        "factorio:factorio:false"
+        "satisfactory:satisfactory:false"
+        "starrapture:starrapture:false"
     )
     
     # Starte Stacks nacheinander
     for stack_config in "${stacks[@]}"; do
         IFS=':' read -r dir_name wait_health wait_for_health_check <<< "$stack_config"
         
-        stack_path="/home/saarlandletsplay/Downloads/dockerserver/$dir_name"
+        stack_path="$(pwd)/$dir_name"
         
         info "=== Nächster Stack: $dir_name ==="
         start_stack "$stack_path" "$wait_health" "$wait_for_health_check"
