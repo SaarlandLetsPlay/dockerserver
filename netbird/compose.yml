@@ -1,0 +1,82 @@
+services:
+  netbird-dashboard:
+    image: netbirdio/dashboard:latest
+    container_name: netbird-dashboard
+    restart: unless-stopped
+    environment:
+      - AUTH_AUDIENCE=${AUTH_AUDIENCE:-netbird}
+      - AUTH_CLIENT_ID=${AUTH_CLIENT_ID}
+      - AUTH_CLIENT_SECRET=${AUTH_CLIENT_SECRET}
+      - AUTH_AUTHORITY=${AUTH_AUTHORITY}
+      - USE_AUTH0=false
+      - AUTH_SUPPORTED_SCOPES=openid profile email offline_access api
+      - AUTH_REDIRECT_URI=https://${NETBIRD_DOMAIN}/auth
+      - AUTH_SILENT_REDIRECT_URI=https://${NETBIRD_DOMAIN}/silent-auth
+      - NETBIRD_MGMT_API_ENDPOINT=https://${NETBIRD_DOMAIN}:33073
+      - NETBIRD_MGMT_GRPC_API_ENDPOINT=https://${NETBIRD_DOMAIN}:33073
+    ports:
+      - ${DASHBOARD_PORT:-8082}:80
+    networks:
+      - saarlandletsplay-external
+
+  netbird-signal:
+    image: netbirdio/signal:latest
+    container_name: netbird-signal
+    restart: unless-stopped
+    volumes:
+      - /opt/stacks/netbird/signal:/var/lib/netbird
+    ports:
+      - ${SIGNAL_PORT:-10000}:80
+    networks:
+      - saarlandletsplay-internal
+
+  netbird-management:
+    image: netbirdio/management:latest
+    container_name: netbird-management
+    restart: unless-stopped
+    depends_on:
+      - netbird-signal
+      - netbird-coturn
+    volumes:
+      - /opt/stacks/netbird/management:/var/lib/netbird
+    ports:
+      - ${MGMT_PORT:-33073}:443
+    command:
+      - --port=443
+      - --log-file=console
+      - --log-level=info
+      - --disable-anonymous-metrics=false
+      - --single-account-mode-domain=${NETBIRD_DOMAIN}
+      - --dns-domain=netbird.selfhosted
+    networks:
+      - saarlandletsplay-external
+      - saarlandletsplay-internal
+
+  netbird-coturn:
+    image: coturn/coturn:latest
+    container_name: netbird-coturn
+    restart: unless-stopped
+    domainname: ${NETBIRD_DOMAIN}
+    network_mode: host
+    volumes:
+      - /opt/stacks/netbird/coturn:/etc/coturn
+    command:
+      - -n
+      - --log-file=stdout
+      - --min-port=49152
+      - --max-port=65535
+      - --realm=${NETBIRD_DOMAIN}
+      - --user=netbird:${TURN_PASSWORD}
+      - --lt-cred-mech
+      - --no-multicast-peers
+      - --no-cli
+      - --no-loopback-peers
+      - --listening-ip=0.0.0.0
+      - --cert=/etc/coturn/cert.pem
+      - --pkey=/etc/coturn/privkey.pem
+
+networks:
+  saarlandletsplay-external:
+    external: true
+  saarlandletsplay-internal:
+    external: true
