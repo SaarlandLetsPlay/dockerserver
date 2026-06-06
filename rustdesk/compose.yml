@@ -1,0 +1,37 @@
+services:
+  hbbs:
+    image: rustdesk/rustdesk-server:latest
+    container_name: rustdesk-hbbs
+    restart: unless-stopped
+    command: hbbs
+    ports:
+      - 21115:21115/tcp
+      - 21116:21116/tcp
+      - 21116:21116/udp
+    volumes:
+      - /opt/stacks/rustdesk/data:/root
+    depends_on:
+      - hbbr
+    networks:
+      - external
+      - my_ipv6_net
+
+  hbbr:
+    image: rustdesk/rustdesk-server:latest
+    container_name: rustdesk-hbbr
+    restart: unless-stopped
+    command: hbbr
+    ports:
+      - 21117:21117/tcp
+    volumes:
+      - /opt/stacks/rustdesk/data:/root
+    networks:
+      - external
+      - my_ipv6_net
+
+networks:
+  external:
+    external: true
+    name: saarlandletsplay-external
+  my_ipv6_net:
+    external: true

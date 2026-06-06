@@ -1,0 +1,38 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    restart: unless-stopped
+    environment:
+      - JELLYFIN_PublishedServerUrl=https://media.saarlandletsplay.de
+    ports:
+      - 8096:8096
+    volumes:
+      - /opt/stacks/jellyfin/config:/config
+      - /opt/stacks/jellyfin/cache:/cache
+      - /opt/stacks/jellyfin/media:/media:ro
+    # Hardware-Beschleunigung (optional – auskommentieren falls nicht verfügbar)
+    # devices:
+    #   - /dev/dri:/dev/dri  # Intel/AMD GPU (VAAPI)
+    # group_add:
+    #   - render
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8096/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - external
+      - internal
+      - my_ipv6_net
+
+networks:
+  external:
+    external: true
+    name: saarlandletsplay-external
+  internal:
+    external: true
+    name: saarlandletsplay-internal
+  my_ipv6_net:
+    external: true
