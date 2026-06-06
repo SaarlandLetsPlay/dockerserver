@@ -4,7 +4,7 @@ services:
     container_name: postgresql
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: PgR7x2!vBfP9qK
+      POSTGRES_PASSWORD: <DEIN_POSTGRES_PASSWORT>
       POSTGRES_USER: postgres
       # Multiple databases for different services
       POSTGRES_DB: authentik

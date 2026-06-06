@@ -25,11 +25,11 @@
 ### 🌐 Web-Services
 | Service | Domain | Beschreibung |
 |---|---|---|
-| **Nginx Proxy Manager** | `proxy.saarlandletsplay.de` | Reverse Proxy (Ports 80, 443, 81) |
-| **Nextcloud** | `cloud.saarlandletsplay.de` | Cloud Storage (Port 85) |
-| **Vaultwarden** | `passwort.saarlandletsplay.de` | Passwort-Manager |
-| **Grafana** | `mon.saarlandletsplay.de` | Monitoring Dashboard |
-| **Open Archiver** | `archiver.saarlandletsplay.de` | E-Mail-Archivierung (Port 3100) |
+| **Nginx Proxy Manager** | `proxy.example.com` | Reverse Proxy (Ports 80, 443, 81) |
+| **Nextcloud** | `cloud.example.com` | Cloud Storage (Port 85) |
+| **Vaultwarden** | `passwort.example.com` | Passwort-Manager |
+| **Grafana** | `mon.example.com` | Monitoring Dashboard |
+| **Open Archiver** | `archiver.example.com` | E-Mail-Archivierung (Port 3100) |
 
 ### 📊 Monitoring
 | Service | Image | Beschreibung |
@@ -93,13 +93,13 @@ dockerserver/
 ## 🔑 Zugangsdaten
 
 ### Datenbanken
-- **MySQL Root**: `R7x2!vBfP9qK`
-- **PostgreSQL**: `PgR7x2!vBfP9qK`
+- **MySQL Root**: `<DEIN_MYSQL_PASSWORT>`
+- **PostgreSQL**: `<DEIN_POSTGRES_PASSWORT>`
 
 ### Verwaltungstools
-- **phpMyAdmin**: `root` / `R7x2!vBfP9qK`
-- **pgAdmin**: `admin@saarlandletsplay.de` / `PgR7x2!vBfP9qK`
-- **Nextcloud Admin**: `admin` / `Y7uK3pL9xF2vN6mT`
+- **phpMyAdmin**: `root` / `<DEIN_MYSQL_PASSWORT>`
+- **pgAdmin**: `admin@example.com` / `<DEIN_POSTGRES_PASSWORT>`
+- **Nextcloud Admin**: `admin` / `<DEIN_NEXTCLOUD_PASSWORT>`
 
 ## � Netzwerk-Architektur
 
@@ -110,7 +110,7 @@ dockerserver/
 | `saarlandletsplay-external` | Bridge (extern) | Externe Erreichbarkeit über NPM |
 
 ### IPv6
-- Server-IPv6: `2a0f:6284:4300:101::13a9`
+- Server-IPv6: `<SERVER_IPV6>`
 - AAAA-DNS-Einträge für `cloud.` und `dockhand.` vorhanden
 - IPv6-Traffic wird über NPM terminiert
 
@@ -120,7 +120,7 @@ dockerserver/
 ## 🎯 Dockhand Integration
 
 Alle Services sind über Dockhand verwaltbar:
-1. Zugriff: `https://dockhand.saarlandletsplay.de`
+1. Zugriff: `https://dockhand.example.com`
 2. Stacks können über die UI deployed und verwaltet werden
 3. Update-Checks für alle Container verfügbar
 

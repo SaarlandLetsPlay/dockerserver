@@ -17,7 +17,7 @@ Dokumenten-Management-System mit OCR, automatischer Klassifizierung und Volltext
 
 | URL | Beschreibung |
 |---|---|
-| `https://paperless.saarlandletsplay.de` | Paperless Web-UI (über NPM) |
+| `https://paperless.example.com` | Paperless Web-UI (über NPM) |
 
 **Admin-Login:** `admin` / siehe `.env` → `PAPERLESS_ADMIN_PASSWORD`
 

@@ -19,7 +19,7 @@ pgAdmin ist ein webbasiertes Administration-Tool für PostgreSQL-Datenbanken mit
 ## 🌐 **Zugriff**
 
 - **Web-Interface**: `http://5.175.180.185:5050`
-- **Admin-Login**: `admin@saarlandletsplay.de` / `PgR7x2!vBfP9qK`
+- **Admin-Login**: `admin@example.com` / `<DEIN_POSTGRES_PASSWORT>`
 
 ## ⚙️ **Konfiguration**
 
@@ -27,8 +27,8 @@ pgAdmin ist ein webbasiertes Administration-Tool für PostgreSQL-Datenbanken mit
 - `5050`: Web-Interface
 
 ### **Admin-Zugang**
-- **Email**: `admin@saarlandletsplay.de`
-- **Passwort**: `PgR7x2!vBfP9qK`
+- **Email**: `admin@example.com`
+- **Passwort**: `<DEIN_POSTGRES_PASSWORT>`
 
 ### **Server-Einstellungen**
 - **Server-Mode**: Disabled
@@ -49,8 +49,8 @@ pgadmin/
 
 ### **pgAdmin-Einstellungen**
 ```env
-PGADMIN_DEFAULT_EMAIL=admin@saarlandletsplay.de
-PGADMIN_DEFAULT_PASSWORD=PgR7x2!vBfP9qK
+PGADMIN_DEFAULT_EMAIL=admin@example.com
+PGADMIN_DEFAULT_PASSWORD=<DEIN_POSTGRES_PASSWORT>
 PGADMIN_CONFIG_SERVER_MODE='False'
 PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED='False'
 ```

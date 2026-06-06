@@ -67,10 +67,10 @@ DATABASE_URL=postgresql://vaultwarden:vaultwarden_pass@postgresql:5432/vaultward
 ADMIN_TOKEN=$(openssl rand -base64 48)
 
 # SMTP Konfiguration (optional)
-SMTP_HOST=mail.saarlandletsplay.de
+SMTP_HOST=mail.example.com
 SMTP_PORT=587
-SMTP_FROM=noreply@vaultwarden.saarlandletsplay.de
-SMTP_USERNAME=registry@saarlandletsplay.de
+SMTP_FROM=noreply@vaultwarden.example.com
+SMTP_USERNAME=registry@example.com
 SMTP_PASSWORD=PWanq1cB!.555@4m
 
 # Sicherheit
@@ -222,7 +222,7 @@ main() {
         echo "Vaultwarden WebSocket: ws://localhost:3012"
         echo ""
         warning "WICHTIG: Passen Sie die DOMAIN in der Konfiguration an Ihren Server an!"
-        warning "Aktuell: https://passwort.saarlandletsplay.de"
+        warning "Aktuell: https://passwort.example.com"
         echo ""
         log "Vaultwarden ist über Dockhand verwaltbar!"
         

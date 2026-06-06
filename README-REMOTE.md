@@ -64,22 +64,22 @@ ssh -i ~/.ssh/id_rsa root@5.175.180.185 "cd /opt/dockerserver && ./setup-vaultwa
 ## 🔑 **Zugangsdaten**
 
 ### **Datenbanken:**
-- **MySQL Root**: `R7x2!vBfP9qK`
-- **PostgreSQL**: `PgR7x2!vBfP9qK`
+- **MySQL Root**: `<DEIN_MYSQL_PASSWORT>`
+- **PostgreSQL**: `<DEIN_POSTGRES_PASSWORT>`
 
 ### **Verwaltungstools:**
-- **phpMyAdmin**: `root` / `R7x2!vBfP9qK`
-- **pgAdmin**: `admin@saarlandletsplay.de` / `PgR7x2!vBfP9qK`
+- **phpMyAdmin**: `root` / `<DEIN_MYSQL_PASSWORT>`
+- **pgAdmin**: `admin@example.com` / `<DEIN_POSTGRES_PASSWORT>`
 - **Vaultwarden Admin**: `daniel@fam-stauder.de` / `Gn9fe4cdz.Emily`
 
 ## 🛠️ **Nach Deployment**
 
 ### **1. Domains konfigurieren**
 In **Nginx Proxy Manager** (`http://5.175.180.185:81`):
-- `git.saarlandletsplay.de` → GitLab (Port 2222)
-- `cloud.saarlandletsplay.de` → OwnCloud (Port 85)
-- `passwort.saarlandletsplay.de` → Vaultwarden (Port 8083)
-- `auth.saarlandletsplay.de` → Authentik (Port 9000)
+- `git.example.com` → GitLab (Port 2222)
+- `cloud.example.com` → OwnCloud (Port 85)
+- `passwort.example.com` → Vaultwarden (Port 8083)
+- `auth.example.com` → Authentik (Port 9000)
 
 ### **2. Firewall prüfen**
 ```bash

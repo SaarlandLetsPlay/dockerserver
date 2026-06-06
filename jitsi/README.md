@@ -23,7 +23,7 @@ Jitsi Meet ist eine Open-Source Video-Konferenzlösung mit WebRTC-basierter Komm
 
 ## 🌐 **Zugriff**
 
-- **Web-Interface**: `https://meet.saarlandletsplay.de`
+- **Web-Interface**: `https://meet.example.com`
 - **Test-URL**: `https://meet.jit.si`
 
 ## ⚙️ **Konfiguration**
@@ -158,7 +158,7 @@ docker compose logs -f jitsi-web
 ### **Health-Checks**
 ```bash
 # Web-Interface
-curl -I https://meet.saarlandletsplay.de
+curl -I https://meet.example.com
 
 # XMPP-Verbindung
 telnet localhost 5222

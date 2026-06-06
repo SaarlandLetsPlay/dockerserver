@@ -23,7 +23,7 @@ Nextcloud ist eine Open-Source File-Sync-und-Share-Lösung mit Self-Hosting, Col
 
 ## 🌐 **Zugriff**
 
-- **Web-Interface**: `https://cloud.saarlandletsplay.de`
+- **Web-Interface**: `https://cloud.example.com`
 - **Admin-Login**: Siehe `.env` (`NEXTCLOUD_ADMIN_USER` / `NEXTCLOUD_ADMIN_PASSWORD`)
 
 ## ⚙️ **Konfiguration**
@@ -76,17 +76,17 @@ nextcloud/
 
 ### **WebDAV**
 ```
-https://cloud.saarlandletsplay.de/remote.php/dav/files/<user>/
+https://cloud.example.com/remote.php/dav/files/<user>/
 ```
 
 ### **CalDAV (Kalender)**
 ```
-https://cloud.saarlandletsplay.de/remote.php/dav/calendars/<user>/
+https://cloud.example.com/remote.php/dav/calendars/<user>/
 ```
 
 ### **CardDAV (Kontakte)**
 ```
-https://cloud.saarlandletsplay.de/remote.php/dav/addressbooks/users/<user>/
+https://cloud.example.com/remote.php/dav/addressbooks/users/<user>/
 ```
 
 ### **Mobile & Desktop Apps**

@@ -148,8 +148,8 @@ show_remote_status() {
         echo "Vaultwarden: http://$REMOTE_SERVER:8083"
         echo ""
         echo "Nutzerdaten für Verwaltungstools:"
-        echo "phpMyAdmin: root / R7x2!vBfP9qK"
-        echo "pgAdmin: admin@saarlandletsplay.de / PgR7x2!vBfP9qK"
+        echo "phpMyAdmin: root / <DEIN_MYSQL_PASSWORT>"
+        echo "pgAdmin: admin@example.com / <DEIN_POSTGRES_PASSWORT>"
         echo "Vaultwarden Admin: daniel@fam-stauder.de / Gn9fe4cdz.Emily"
 EOF
 }

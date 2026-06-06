@@ -40,14 +40,14 @@ create_directories() {
 Du kannst pgAdmin jetzt über beide Wege aufrufen:
 
 ### 1. Über deine sichere Domain (Empfohlen):
-👉 **[https://db.postgres.saarlandletsplay.de](https://db.postgres.saarlandletsplay.de)**
+👉 **[https://db.postgres.example.com](https://db.postgres.example.com)**
 
 ### 2. Direkt über IP und Port (Bypass Proxy):
 👉 **[http://5.175.180.185:5050](http://5.175.180.185:5050)**
 
 ### 🔐 Deine Zugangsdaten:
-*   **Email-Adresse:** `admin@saarlandletsplay.de`
-*   **Master-Passwort:** `PgR7x2!vBfP9qK`
+*   **Email-Adresse:** `admin@example.com`
+*   **Master-Passwort:** `<DEIN_POSTGRES_PASSWORT>`
 
 ---
 
@@ -60,7 +60,7 @@ Nachdem du dich eingeloggt hast, kannst du deine PostgreSQL-Datenbanken wie folg
 *   **Host (Connection):** `postgresql` *(Der Docker-Dienstname)*
 *   **Port:** `5432`
 *   **Username:** `postgres`
-*   **Password:** `PgR7x2!vBfP9qK`
+*   **Password:** `<DEIN_POSTGRES_PASSWORT>`
 *   **Save password:** `Yes`
 
 ### 2. Authentik Datenbank

@@ -59,7 +59,7 @@ postgresql/
 
 ### **PostgreSQL-Einstellungen**
 ```env
-POSTGRES_PASSWORD=PgR7x2!vBfP9qK
+POSTGRES_PASSWORD=<DEIN_POSTGRES_PASSWORT>
 POSTGRES_USER=postgres
 POSTGRES_DB=authentik
 ```

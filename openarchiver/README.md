@@ -23,7 +23,7 @@ Open Archiver ist eine Open-Source E-Mail-Archivierungslösung mit Volltextsuche
 
 ## 🌐 **Zugriff**
 
-- **Web-Interface**: `https://archiver.saarlandletsplay.de`
+- **Web-Interface**: `https://archiver.example.com`
 - **Interner Port**: `3100`
 
 ## ⚙️ **Konfiguration**

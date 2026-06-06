@@ -3,8 +3,8 @@
 ## 🔐 **Login-Daten für pgAdmin**
 
 - **URL**: `http://5.175.180.185:5050`
-- **Email**: `admin@saarlandletsplay.de`
-- **Passwort**: `PgR7x2!vBfP9qK`
+- **Email**: `admin@example.com`
+- **Passwort**: `<DEIN_POSTGRES_PASSWORT>`
 
 ---
 
@@ -94,7 +94,7 @@
 Für MySQL-Datenbanken verwende **phpMyAdmin**:
 - **URL**: `http://5.175.180.185:8080`
 - **Benutzer**: `root`
-- **Passwort**: `R7x2!vBfP9qK`
+- **Passwort**: `<DEIN_MYSQL_PASSWORT>`
 
 **Verfügbare MySQL-Datenbanken:**
 - `npm_db` (Nginx Proxy Manager)

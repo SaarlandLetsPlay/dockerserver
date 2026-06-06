@@ -23,9 +23,9 @@ GitLab ist eine webbasierte DevOps Lifecycle Tool mit Git Repository Management,
 
 ## 🌐 **Zugriff**
 
-- **Web-Interface**: `https://git.saarlandletsplay.de`
-- **SSH**: `ssh://git@git.saarlandletsplay.de:2222`
-- **Git HTTP**: `https://git.saarlandletsplay.de/[username]/[project].git`
+- **Web-Interface**: `https://git.example.com`
+- **SSH**: `ssh://git@git.example.com:2222`
+- **Git HTTP**: `https://git.example.com/[username]/[project].git`
 
 ## ⚙️ **Konfiguration**
 
@@ -60,7 +60,7 @@ gitlab/
 
 ### **GitLab Omnibus Konfiguration**
 ```yaml
-external_url 'https://git.saarlandletsplay.de'
+external_url 'https://git.example.com'
 gitlab_rails['gitlab_shell_ssh_port'] = 2222
 ```
 
@@ -77,9 +77,9 @@ gitlab_rails['db_database'] = 'gitlabhq_production'
 ### **SMTP-Einstellungen**
 ```yaml
 gitlab_rails['smtp_enable'] = true
-gitlab_rails['smtp_address'] = "mail.saarlandletsplay.de"
+gitlab_rails['smtp_address'] = "mail.example.com"
 gitlab_rails['smtp_port'] = 587
-gitlab_rails['smtp_user_name'] = "registry@saarlandletsplay.de"
+gitlab_rails['smtp_user_name'] = "registry@example.com"
 gitlab_rails['smtp_password'] = "PWanq1cB!.555@4m"
 ```
 
@@ -110,8 +110,8 @@ gitlab_rails['smtp_password'] = "PWanq1cB!.555@4m"
 ### **SSH-Konfiguration**
 ```bash
 # ~/.ssh/config
-Host git.saarlandletsplay.de
-  HostName git.saarlandletsplay.de
+Host git.example.com
+  HostName git.example.com
   User git
   Port 2222
   IdentityFile ~/.ssh/id_rsa
@@ -162,7 +162,7 @@ docker compose logs -f gitlab
 
 ### **Health-Check**
 ```bash
-curl -I https://git.saarlandletsplay.de
+curl -I https://git.example.com
 ```
 
 ### **System-Informationen**

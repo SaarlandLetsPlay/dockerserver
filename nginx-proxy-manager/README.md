@@ -147,7 +147,7 @@ curl -I http://example.com
 tar -czf npm_backup.tar.gz data/
 
 # Datenbank sichern
-docker exec mysql mysqldump -u root -pR7x2!vBfP9qK npm_db > npm_db_backup.sql
+docker exec mysql mysqldump -u root -p<DEIN_MYSQL_PASSWORT> npm_db > npm_db_backup.sql
 ```
 
 ### **Update durchführen**

@@ -20,7 +20,7 @@ MySQL ist ein beliebtes Open-Source Relationales Datenbank-Management-System, da
 
 - **phpMyAdmin**: `http://5.175.180.185:8080`
 - **Root-Benutzer**: `root`
-- **Root-Passwort**: `R7x2!vBfP9qK`
+- **Root-Passwort**: `<DEIN_MYSQL_PASSWORT>`
 
 ## ⚙️ **Konfiguration**
 
@@ -36,7 +36,7 @@ MySQL ist ein beliebtes Open-Source Relationales Datenbank-Management-System, da
 - `grafana`: Grafana
 
 ### **Passwörter**
-- `root`: `R7x2!vBfP9qK`
+- `root`: `<DEIN_MYSQL_PASSWORT>`
 - `npm`: `NpM4@dA9#xP`
 - `owncloud`: `owncloud_pass`
 - `grafana`: `grafana_pass`
@@ -54,7 +54,7 @@ mysql/
 
 ### **MySQL-Einstellungen**
 ```env
-MYSQL_ROOT_PASSWORD=R7x2!vBfP9qK
+MYSQL_ROOT_PASSWORD=<DEIN_MYSQL_PASSWORT>
 MYSQL_DATABASE=npm_db
 MYSQL_USER=npm
 MYSQL_PASSWORD=NpM4@dA9#xP
@@ -105,25 +105,25 @@ ALTER USER 'benutzer'@'%' IDENTIFIED BY 'neues_passwort';
 ### **Backup erstellen**
 ```bash
 # Komplette Datenbank sichern
-docker exec mysql mysqldump -u root -pR7x2!vBfP9qK --all-databases > full_backup.sql
+docker exec mysql mysqldump -u root -p<DEIN_MYSQL_PASSWORT> --all-databases > full_backup.sql
 
 # Einzelne Datenbank sichern
-docker exec mysql mysqldump -u root -pR7x2!vBfP9qK npm_db > npm_backup.sql
+docker exec mysql mysqldump -u root -p<DEIN_MYSQL_PASSWORT> npm_db > npm_backup.sql
 
 # Komprimiertes Backup
-docker exec mysql mysqldump -u root -pR7x2!vBfP9qK --all-databases | gzip > full_backup.sql.gz
+docker exec mysql mysqldump -u root -p<DEIN_MYSQL_PASSWORT> --all-databases | gzip > full_backup.sql.gz
 ```
 
 ### **Backup wiederherstellen**
 ```bash
 # Komplette Datenbank wiederherstellen
-docker exec -i mysql mysql -u root -pR7x2!vBfP9qK < full_backup.sql
+docker exec -i mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> < full_backup.sql
 
 # Einzelne Datenbank wiederherstellen
-docker exec -i mysql mysql -u root -pR7x2!vBfP9qK npm_db < npm_backup.sql
+docker exec -i mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> npm_db < npm_backup.sql
 
 # Komprimiertes Backup wiederherstellen
-gunzip -c full_backup.sql.gz | docker exec -i mysql mysql -u root -pR7x2!vBfP9qK
+gunzip -c full_backup.sql.gz | docker exec -i mysql mysql -u root -p<DEIN_MYSQL_PASSWORT>
 ```
 
 ## 🔌 **Verbindungen**
@@ -134,7 +134,7 @@ gunzip -c full_backup.sql.gz | docker exec -i mysql mysql -u root -pR7x2!vBfP9qK
 mysql -h mysql -u benutzer -p
 
 # Verbindung testen
-docker exec mysql mysql -u root -pR7x2!vBfP9qK -e "SELECT 1;"
+docker exec mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> -e "SELECT 1;"
 ```
 
 ### **Externe Verbindungen**
@@ -176,13 +176,13 @@ docker compose logs -f mysql
 ### **Status prüfen**
 ```bash
 # MySQL-Status
-docker exec mysql mysql -u root -pR7x2!vBfP9qK -e "SHOW STATUS;"
+docker exec mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> -e "SHOW STATUS;"
 
 # Prozesse anzeigen
-docker exec mysql mysql -u root -pR7x2!vBfP9qK -e "SHOW PROCESSLIST;"
+docker exec mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> -e "SHOW PROCESSLIST;"
 
 # Datenbank-Größen
-docker exec mysql mysql -u root -pR7x2!vBfP9qK -e "SELECT table_schema AS 'Database', ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS 'Size (MB)' FROM information_schema.tables GROUP BY table_schema;"
+docker exec mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> -e "SELECT table_schema AS 'Database', ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS 'Size (MB)' FROM information_schema.tables GROUP BY table_schema;"
 ```
 
 ### **Performance-Optimierung**
@@ -215,10 +215,10 @@ OPTIMIZE TABLE table_name;
 ### **Log-Rotation**
 ```bash
 # MySQL-Logs rotieren
-docker exec mysql mysql -u root -pR7x2!vBfP9qK -e "FLUSH LOGS;"
+docker exec mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> -e "FLUSH LOGS;"
 
 # Binäre Logs löschen
-docker exec mysql mysql -u root -pR7x2!vBfP9qK -e "PURGE BINARY LOGS BEFORE DATE_SUB(NOW(), INTERVAL 7 DAY);"
+docker exec mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> -e "PURGE BINARY LOGS BEFORE DATE_SUB(NOW(), INTERVAL 7 DAY);"
 ```
 
 ### **Update durchführen**

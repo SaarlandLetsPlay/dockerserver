@@ -10,7 +10,7 @@ services:
       PMA_PORT: 3306
       PMA_ARBITRARY: 1 # optional, erlaubt Login auf andere DBs
       PMA_USER: root # Standard-Login-Benutzer
-      PMA_PASSWORD: R7x2!vBfP9qK # Root-Passwort
+      PMA_PASSWORD: <DEIN_MYSQL_PASSWORT> # Root-Passwort
     volumes:
       - /opt/stacks/phpmyadmin/config:/etc/phpmyadmin # eigene config.inc.php
     networks:

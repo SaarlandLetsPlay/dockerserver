@@ -13,7 +13,7 @@
 ### **MySQL (Zentrale Datenbank)**
 - **Host**: `mysql` (intern) / `5.175.180.185:3306` (extern)
 - **Root User**: `root`
-- **Root Passwort**: `R7x2!vBfP9qK`
+- **Root Passwort**: `<DEIN_MYSQL_PASSWORT>`
 - **Datenbanken**:
   - `npm_db` (Nginx Proxy Manager)
   - `owncloud` (OwnCloud)
@@ -37,23 +37,23 @@
 
 #### **Dockhand**
 - **URL**: `http://5.175.180.185:3000`
-- **Domain**: `dockhand.saarlandletsplay.de`
+- **Domain**: `dockhand.example.com`
 - **Login**: Keine Authentifizierung benötigt
 - **Zweck**: Docker Container Management
 
 #### **phpMyAdmin**
 - **URL**: `http://5.175.180.185:8080`
-- **Domain**: `db.mysql.saarlandletsplay.de`
+- **Domain**: `db.mysql.example.com`
 - **Benutzer**: `root`
-- **Passwort**: `R7x2!vBfP9qK`
+- **Passwort**: `<DEIN_MYSQL_PASSWORT>`
 - **Status**: ✅ **BEHOBEN** - Konfiguration repariert
 - **Zweck**: MySQL Datenbank Management
 
 #### **pgAdmin**
 - **URL**: `http://5.175.180.185:5050`
-- **Domain**: `db.postgres.saarlandletsplay.de`
-- **Email**: `admin@saarlandletsplay.de`
-- **Passwort**: `PgR7x2!vBfP9qK`
+- **Domain**: `db.postgres.example.com`
+- **Email**: `admin@example.com`
+- **Passwort**: `<DEIN_POSTGRES_PASSWORT>`
 - **Zweck**: PostgreSQL Datenbank Management
 
 #### **Nginx Proxy Manager**
@@ -69,7 +69,7 @@
 
 #### **Vaultwarden (Passwort-Manager)**
 - **URL**: `http://5.175.180.185:8083`
-- **Domain**: `passwort.saarlandletsplay.de`
+- **Domain**: `passwort.example.com`
 - **Admin Email**: `daniel@fam-stauder.de`
 - **Admin Passwort**: `Gn9fe4cdz.Emily`
 - **Registrierung**: `SIGNUPS_ALLOWED=true`
@@ -77,30 +77,30 @@
 
 #### **Grafana**
 - **URL**: `http://5.175.180.185:3000`
-- **Domain**: `grafana.saarlandletsplay.de`
+- **Domain**: `grafana.example.com`
 - **Admin User**: `admin`
 - **Admin Passwort**: (bei erstem Login festlegen)
 - **Zweck**: Monitoring & Visualisierung
 
 #### **Authentik (Identity & Access Management)**
 - **URL**: `http://5.175.180.185:9000`
-- **Domain**: `auth.saarlandletsplay.de`
+- **Domain**: `auth.example.com`
 - **Admin User**: `admin`
 - **Admin Passwort**: `Gn9fe4cdz.Emily` (wenn erstellt)
 - **Zweck**: SSO & Authentifizierung
 
 #### **GitLab**
 - **URL**: `http://5.175.180.185:2222`
-- **Domain**: `git.saarlandletsplay.de`
+- **Domain**: `git.example.com`
 - **Root User**: `root`
 - **Root Passwort**: (bei erstem Login festlegen)
 - **Zweck**: Git Repository Management
 
 #### **OwnCloud**
 - **URL**: `http://5.175.180.185:85`
-- **Domain**: `cloud.saarlandletsplay.de`
+- **Domain**: `cloud.example.com`
 - **Admin User**: `admin`
-- **Admin Passwort**: `Y7uK3pL9xF2vN6mT`
+- **Admin Passwort**: `<DEIN_NEXTCLOUD_PASSWORT>`
 - **Zweck**: Cloud Storage & File-Sharing
 
 #### **Satisfactory (Game Server)**
@@ -115,7 +115,7 @@
 
 ### **Prometheus**
 - **URL**: `http://5.175.180.185:9090`
-- **Domain**: `prometheus.saarlandletsplay.de`
+- **Domain**: `prometheus.example.com`
 - **Auth**: Keine (intern)
 - **Zweck**: Metrics Collection
 
@@ -135,20 +135,20 @@
 
 ### **DNS-Einträge (Wildcard)**
 ```
-*.saarlandletsplay.de.    IN    A    5.175.180.185
+*.example.com.    IN    A    5.175.180.185
 ```
 
 ### **Konfigurierte Domains**
 | Domain | Service | Port | Status |
 |--------|---------|------|--------|
-| `dockhand.saarlandletsplay.de` | Dockhand | 3000 | ✅ |
-| `db.mysql.saarlandletsplay.de` | phpMyAdmin | 8080 | ✅ |
-| `db.postgres.saarlandletsplay.de` | pgAdmin | 5050 | ✅ |
-| `passwort.saarlandletsplay.de` | Vaultwarden | 8083 | ✅ |
-| `grafana.saarlandletsplay.de` | Grafana | 3000 | ✅ |
-| `auth.saarlandletsplay.de` | Authentik | 9000 | ⚠️ |
-| `git.saarlandletsplay.de` | GitLab | 2222 | ✅ |
-| `cloud.saarlandletsplay.de` | OwnCloud | 85 | ⚠️ |
+| `dockhand.example.com` | Dockhand | 3000 | ✅ |
+| `db.mysql.example.com` | phpMyAdmin | 8080 | ✅ |
+| `db.postgres.example.com` | pgAdmin | 5050 | ✅ |
+| `passwort.example.com` | Vaultwarden | 8083 | ✅ |
+| `grafana.example.com` | Grafana | 3000 | ✅ |
+| `auth.example.com` | Authentik | 9000 | ⚠️ |
+| `git.example.com` | GitLab | 2222 | ✅ |
+| `cloud.example.com` | OwnCloud | 85 | ⚠️ |
 
 ---
 
@@ -168,7 +168,7 @@ docker exec phpmyadmin sh -c 'cat > /etc/phpmyadmin/config.inc.php << "EOF"
 \$cfg["Servers"][1]["host"] = "mysql";
 \$cfg["Servers"][1]["auth_type"] = "cookie";
 \$cfg["Servers"][1]["user"] = "root";
-\$cfg["Servers"][1]["password"] = "R7x2!vBfP9qK";
+\$cfg["Servers"][1]["password"] = "<DEIN_MYSQL_PASSWORT>";
 EOF'
 
 # 2. Container neu gestartet
@@ -176,13 +176,13 @@ docker restart phpmyadmin
 
 # 3. Verbindung getestet
 curl -I http://localhost:8080
-docker exec phpmyadmin php -r '\$conn = new mysqli(\"mysql\", \"root\", \"R7x2!vBfP9qK\"); if (\$conn->connect_error) { echo \"Connection failed: \" . \$conn->connect_error . PHP_EOL; } else { echo \"Connection successful\" . PHP_EOL; } \$conn->close();'
+docker exec phpmyadmin php -r '\$conn = new mysqli(\"mysql\", \"root\", \"<DEIN_MYSQL_PASSWORT>\"); if (\$conn->connect_error) { echo \"Connection failed: \" . \$conn->connect_error . PHP_EOL; } else { echo \"Connection successful\" . PHP_EOL; } \$conn->close();'
 ```
 
 ### **Ergebnis:**
 - ✅ phpMyAdmin erreichbar unter `http://5.175.180.185:8080`
 - ✅ MySQL-Verbindung funktioniert
-- ✅ Login mit `root` / `R7x2!vBfP9qK` möglich
+- ✅ Login mit `root` / `<DEIN_MYSQL_PASSWORT>` möglich
 - ✅ PHP-Syntax-Fehler behoben
 
 ---
@@ -213,7 +213,7 @@ docker exec phpmyadmin php -r '\$conn = new mysqli(\"mysql\", \"root\", \"R7x2!v
 ### **Empfohlene Änderungen**
 1. **Nginx Proxy Manager**: `changeme` → sicheres Passwort
 2. **Vaultwarden Admin**: `Gn9fe4cdz.Emily` → persönliches Passwort
-3. **MySQL Root**: `R7x2!vBfP9qK` → sicheres Passwort
+3. **MySQL Root**: `<DEIN_MYSQL_PASSWORT>` → sicheres Passwort
 4. **PostgreSQL Users**: Standard-Passwörter ändern
 5. **SSH Key**: Passphrase `gn9fe4cdz` → persönliche Passphrase
 
@@ -236,7 +236,7 @@ docker logs [container_name]
 docker restart [container_name]
 
 # Datenbank-Verbindung testen
-docker exec mysql mysql -u root -pR7x2!vBfP9qK -e "SHOW DATABASES;"
+docker exec mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> -e "SHOW DATABASES;"
 docker exec postgresql psql -U postgres -c "\l"
 ```
 
@@ -247,4 +247,4 @@ Siehe `NGINX-PROXY-SETUP.md` für detaillierte Fehlerbehebung.
 
 **📅 Letzte Aktualisierung**: 02.03.2026  
 **🔐 Sicherheit**: Alle Passwörter bei erstem Login ändern!  
-**🌐 Domains**: Wildcard-Zertifikat für `*.saarlandletsplay.de` verwenden
+**🌐 Domains**: Wildcard-Zertifikat für `*.example.com` verwenden

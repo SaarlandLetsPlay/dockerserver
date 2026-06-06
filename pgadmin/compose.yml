@@ -6,8 +6,8 @@ services:
     ports:
       - 5050:80
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@saarlandletsplay.de
-      PGADMIN_DEFAULT_PASSWORD: PgR7x2!vBfP9qK
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: <DEIN_POSTGRES_PASSWORT>
       PGADMIN_CONFIG_SERVER_MODE: 'False'
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
     volumes:

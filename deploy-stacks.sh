@@ -321,8 +321,8 @@ main() {
     echo "Nginx Proxy Manager: http://localhost:81"
     echo ""
     echo "Nutzerdaten für Verwaltungstools:"
-    echo "phpMyAdmin: root / R7x2!vBfP9qK"
-    echo "pgAdmin: admin@saarlandletsplay.de / PgR7x2!vBfP9qK"
+    echo "phpMyAdmin: root / <DEIN_MYSQL_PASSWORT>"
+    echo "pgAdmin: admin@example.com / <DEIN_POSTGRES_PASSWORT>"
     
     echo ""
     log "Alle Services sind über Dockhand verwaltbar!"

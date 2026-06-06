@@ -19,7 +19,7 @@ phpMyAdmin ist ein webbasiertes Tool zur Verwaltung von MySQL-Datenbanken mit vo
 ## 🌐 **Zugriff**
 
 - **Web-Interface**: `http://5.175.180.185:8080`
-- **Standard-Login**: `root` / `R7x2!vBfP9qK`
+- **Standard-Login**: `root` / `<DEIN_MYSQL_PASSWORT>`
 
 ## ⚙️ **Konfiguration**
 
@@ -30,7 +30,7 @@ phpMyAdmin ist ein webbasiertes Tool zur Verwaltung von MySQL-Datenbanken mit vo
 - **Host**: `mysql`
 - **Port**: `3306`
 - **Standard-User**: `root`
-- **Standard-Passwort**: `R7x2!vBfP9qK`
+- **Standard-Passwort**: `<DEIN_MYSQL_PASSWORT>`
 
 ### **Arbitrary-Login**
 - `PMA_ARBITRARY: 1`: Login auf beliebige Datenbanken erlauben
@@ -53,7 +53,7 @@ PMA_HOST=mysql
 PMA_PORT=3306
 PMA_ARBITRARY=1
 PMA_USER=root
-PMA_PASSWORD=R7x2!vBfP9qK
+PMA_PASSWORD=<DEIN_MYSQL_PASSWORT>
 ```
 
 ### **Custom-Konfiguration**
@@ -63,7 +63,7 @@ $cfg['Servers'][1]['host'] = 'mysql';
 $cfg['Servers'][1]['port'] = '3306';
 $cfg['Servers'][1]['auth_type'] = 'cookie';
 $cfg['Servers'][1]['user'] = 'root';
-$cfg['Servers'][1]['password'] = 'R7x2!vBfP9qK';
+$cfg['Servers'][1]['password'] = '<DEIN_MYSQL_PASSWORT>';
 ```
 
 ## 🗄️ **Datenbank-Übersicht**
@@ -169,22 +169,22 @@ SHOW VARIABLES LIKE '%query_cache%';
 ### **Backup erstellen**
 ```bash
 # Komplette Datenbank sichern
-docker exec mysql mysqldump -u root -pR7x2!vBfP9qK --all-databases > full_backup.sql
+docker exec mysql mysqldump -u root -p<DEIN_MYSQL_PASSWORT> --all-databases > full_backup.sql
 
 # Einzelne Datenbank sichern
-docker exec mysql mysqldump -u root -pR7x2!vBfP9qK npm_db > npm_backup.sql
+docker exec mysql mysqldump -u root -p<DEIN_MYSQL_PASSWORT> npm_db > npm_backup.sql
 
 # Komprimiertes Backup
-docker exec mysql mysqldump -u root -pR7x2!vBfP9qK --all-databases | gzip > full_backup.sql.gz
+docker exec mysql mysqldump -u root -p<DEIN_MYSQL_PASSWORT> --all-databases | gzip > full_backup.sql.gz
 ```
 
 ### **Backup wiederherstellen**
 ```bash
 # Komplette Datenbank wiederherstellen
-docker exec -i mysql mysql -u root -pR7x2!vBfP9qK < full_backup.sql
+docker exec -i mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> < full_backup.sql
 
 # Einzelne Datenbank wiederherstellen
-docker exec -i mysql mysql -u root -pR7x2!vBfP9qK npm_db < npm_backup.sql
+docker exec -i mysql mysql -u root -p<DEIN_MYSQL_PASSWORT> npm_db < npm_backup.sql
 ```
 
 ### **Optimierung**

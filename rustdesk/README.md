@@ -32,8 +32,8 @@ Einstellungen (⚙) → Netzwerk → ID-Server / Relay-Server
 
 | Feld | Wert |
 |---|---|
-| ID-Server | `rustdesk.saarlandletsplay.de` |
-| Relay-Server | `rustdesk.saarlandletsplay.de` |
+| ID-Server | `rustdesk.example.com` |
+| Relay-Server | `rustdesk.example.com` |
 | API-Server | *(leer lassen)* |
 | Key | `<Public Key aus *.pub Datei>` |
 

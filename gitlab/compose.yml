@@ -8,7 +8,7 @@ services:
       - redis
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://git.saarlandletsplay.de'
+        external_url 'https://git.example.com'
 
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
 
@@ -30,14 +30,14 @@ services:
 
         ### SMTP für Emails
         gitlab_rails['smtp_enable'] = true
-        gitlab_rails['smtp_address'] = "mail.saarlandletsplay.de"
+        gitlab_rails['smtp_address'] = "mail.example.com"
         gitlab_rails['smtp_port'] = 587
-        gitlab_rails['smtp_user_name'] = "registry@saarlandletsplay.de"
+        gitlab_rails['smtp_user_name'] = "registry@example.com"
         gitlab_rails['smtp_password'] = "PWanq1cB!.555@4m"
-        gitlab_rails['smtp_domain'] = "saarlandletsplay.de"
+        gitlab_rails['smtp_domain'] = "example.com"
         gitlab_rails['smtp_authentication'] = "login"
         gitlab_rails['smtp_enable_starttls_auto'] = true
-        gitlab_rails['gitlab_email_from'] = "noreply.gitlab@saarlandletsplay.de"
+        gitlab_rails['gitlab_email_from'] = "noreply.gitlab@example.com"
 
         ### Interner HTTP für NPM
         nginx['listen_port'] = 80

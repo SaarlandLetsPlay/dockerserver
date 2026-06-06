@@ -4,7 +4,7 @@ services:
     container_name: mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: R7x2!vBfP9qK
+      MYSQL_ROOT_PASSWORD: <DEIN_MYSQL_PASSWORT>
       MYSQL_DATABASE: npm_db
       MYSQL_USER: npm
       MYSQL_PASSWORD: NpM4@dA9#xP

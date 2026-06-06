@@ -23,8 +23,8 @@ Vaultwarden ist ein Open-Source Password Manager, kompatibel mit Bitwarden Clien
 
 ## 🌐 **Zugriff**
 
-- **Web-Interface**: `https://passwort.saarlandletsplay.de`
-- **Admin-Panel**: `https://passwort.saarlandletsplay.de/admin`
+- **Web-Interface**: `https://passwort.example.com`
+- **Admin-Panel**: `https://passwort.example.com/admin`
 
 ## ⚙️ **Konfiguration**
 
@@ -59,7 +59,7 @@ vaultwarden/
 ### **Vaultwarden-Einstellungen**
 ```env
 WEBSOCKET_ENABLED=true
-DOMAIN=https://passwort.saarlandletsplay.de
+DOMAIN=https://passwort.example.com
 ADMIN_TOKEN=T06WiChPFKbyYYTd6oWHfGvt37vt1blLcPKUJIX+H4=
 SIGNUPS_ALLOWED=true
 DATABASE_URL=postgresql://vaultwarden:vaultwarden_pass@postgresql:5432/vaultwarden_db
@@ -180,7 +180,7 @@ docker compose logs -f vaultwarden
 
 ### **Health-Check**
 ```bash
-curl -I https://passwort.saarlandletsplay.de
+curl -I https://passwort.example.com
 ```
 
 ## 🛠️ **Wartung**
