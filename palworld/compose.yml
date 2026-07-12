@@ -1,0 +1,47 @@
+services:
+  palworld:
+    image: thijsvanloef/palworld-server-docker:latest
+    container_name: palworld
+    restart: unless-stopped
+    environment:
+      # Server-Konfiguration
+      - PUID=1000
+      - PGID=1000
+      - PORT=${PALWORLD_PORT:-8211}
+      - PLAYERS=${PALWORLD_MAX_PLAYERS:-16}
+      - MULTITHREADING=${PALWORLD_MULTITHREADING:-true}
+      - RCON_ENABLED=${PALWORLD_RCON_ENABLED:-true}
+      - RCON_PORT=${PALWORLD_RCON_PORT:-25575}
+      - TZ=${TZ:-Europe/Berlin}
+      - ADMIN_PASSWORD=${PALWORLD_ADMIN_PASSWORD:-changeme}
+      - SERVER_PASSWORD=${PALWORLD_SERVER_PASSWORD:-}
+      - SERVER_NAME=${PALWORLD_SERVER_NAME:-SaarlandLetsPlay Palworld}
+      - SERVER_DESCRIPTION=${PALWORLD_SERVER_DESCRIPTION:-Willkommen auf dem SaarlandLetsPlay Palworld Server!}
+      - COMMUNITY=${PALWORLD_COMMUNITY:-false}
+      - UPDATE_ON_BOOT=${PALWORLD_UPDATE_ON_BOOT:-true}
+      - BACKUP_ENABLED=${PALWORLD_BACKUP_ENABLED:-true}
+      - BACKUP_CRON_EXPRESSION=${PALWORLD_BACKUP_CRON:-0 */6 * * *}
+      - DELETE_OLD_BACKUPS=${PALWORLD_DELETE_OLD_BACKUPS:-true}
+      - OLD_BACKUP_DAYS=${PALWORLD_OLD_BACKUP_DAYS:-7}
+    ports:
+      - "${PALWORLD_PORT:-8211}:8211/udp"
+      - "${PALWORLD_RCON_PORT:-25575}:25575/tcp"
+    volumes:
+      - /opt/stacks/palworld/data:/palworld
+    networks:
+      - saarlandletsplay-internal
+      - saarlandletsplay-external
+    deploy:
+      resources:
+        limits:
+          memory: ${PALWORLD_MEMORY_LIMIT:-8G}
+          cpus: '${PALWORLD_CPU_LIMIT:-4.0}'
+        reservations:
+          memory: ${PALWORLD_MEMORY_RESERVATION:-4G}
+          cpus: '${PALWORLD_CPU_RESERVATION:-2.0}'
+
+networks:
+  saarlandletsplay-internal:
+    external: true
+  saarlandletsplay-external:
+    external: true
